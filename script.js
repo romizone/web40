@@ -41,8 +41,8 @@ function initParticles() {
             this.vx = (Math.random() - 0.5) * 0.3;
             this.vy = (Math.random() - 0.5) * 0.3;
             this.r = Math.random() * 1.5 + 0.5;
-            this.alpha = Math.random() * 0.4 + 0.1;
-            const colors = ['0, 240, 255', '168, 85, 247', '6, 214, 160'];
+            this.alpha = Math.random() * 0.2 + 0.05;
+            const colors = ['8, 145, 178', '124, 58, 237', '5, 150, 105'];
             this.color = colors[Math.floor(Math.random() * colors.length)];
         }
         update() {
@@ -74,7 +74,7 @@ function initParticles() {
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(168, 85, 247, ${0.08 * (1 - dist / 120)})`;
+                    ctx.strokeStyle = `rgba(124, 58, 237, ${0.06 * (1 - dist / 120)})`;
                     ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
@@ -134,7 +134,7 @@ function initNeuralNetwork() {
                     ctx.beginPath();
                     ctx.moveTo(nodes[i].x, nodes[i].y);
                     ctx.lineTo(nodes[j].x, nodes[j].y);
-                    ctx.strokeStyle = `rgba(0, 240, 255, ${alpha * pulse})`;
+                    ctx.strokeStyle = `rgba(8, 145, 178, ${alpha * pulse})`;
                     ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
@@ -145,7 +145,7 @@ function initNeuralNetwork() {
             const pulse = 0.5 + 0.5 * Math.sin(n.pulsePhase);
             ctx.beginPath();
             ctx.arc(n.x, n.y, 2 + pulse * 2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 240, 255, ${0.15 + pulse * 0.15})`;
+            ctx.fillStyle = `rgba(8, 145, 178, ${0.12 + pulse * 0.12})`;
             ctx.fill();
         });
 
@@ -1099,9 +1099,9 @@ function renderWorld() {
 
     const hour = (worldTime % 1440) / 60;
     const daylight = Math.max(0, Math.sin((hour - 6) / 12 * Math.PI));
-    const bgR = Math.floor(8 + daylight * 4);
-    const bgG = Math.floor(8 + daylight * 4);
-    const bgB = Math.floor(18 + daylight * 8);
+    const bgR = Math.floor(228 + daylight * 12);
+    const bgG = Math.floor(228 + daylight * 12);
+    const bgB = Math.floor(235 + daylight * 10);
     ctx.fillStyle = `rgb(${bgR},${bgG},${bgB})`;
     ctx.fillRect(0, 0, w, h);
 
@@ -1110,18 +1110,18 @@ function renderWorld() {
     for (let y = 0; y < GOL_ROWS; y++) {
         for (let x = 0; x < GOL_COLS; x++) {
             if (golGrid[y][x]) {
-                ctx.fillStyle = `rgba(6, 214, 160, ${0.04 + daylight * 0.02})`;
+                ctx.fillStyle = `rgba(5, 150, 105, ${0.08 + daylight * 0.04})`;
                 ctx.fillRect(x * cellW + 1, y * cellH + 1, cellW - 2, cellH - 2);
             }
         }
     }
 
-    ctx.strokeStyle = 'rgba(168, 85, 247, 0.025)';
+    ctx.strokeStyle = 'rgba(124, 58, 237, 0.06)';
     ctx.lineWidth = 0.5;
     for (let i = 0; i < w; i += 40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
     for (let i = 0; i < h; i += 40) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.06)';
     ctx.lineWidth = 1;
     for (let i = 0; i < LOCATIONS.length; i++) {
         for (let j = i+1; j < LOCATIONS.length; j++) {
@@ -1141,7 +1141,7 @@ function renderWorld() {
     LOCATIONS.forEach(loc => {
         const lx = loc.x * w, ly = loc.y * h;
         const grd = ctx.createRadialGradient(lx, ly, 0, lx, ly, 35);
-        grd.addColorStop(0, 'rgba(168, 85, 247, 0.06)');
+        grd.addColorStop(0, 'rgba(124, 58, 237, 0.1)');
         grd.addColorStop(1, 'transparent');
         ctx.fillStyle = grd;
         ctx.fillRect(lx-35, ly-35, 70, 70);
@@ -1149,7 +1149,7 @@ function renderWorld() {
         ctx.textAlign = 'center';
         ctx.fillText(loc.emoji, lx, ly + 6);
         ctx.font = '9px Inter, sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillStyle = 'rgba(0,0,0,0.45)';
         ctx.fillText(loc.name, lx, ly + 22);
     });
 
@@ -1161,7 +1161,7 @@ function renderWorld() {
                 ctx.beginPath();
                 ctx.moveTo(a.x * w, a.y * h);
                 ctx.lineTo(f.x * w, f.y * h);
-                ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+                ctx.strokeStyle = 'rgba(8, 145, 178, 0.1)';
                 ctx.lineWidth = 0.5;
                 ctx.stroke();
             }
@@ -1184,7 +1184,7 @@ function renderWorld() {
                 socializing: `rgba(236, 72, 153, ${0.15 + heartPulse * 0.1})`,
                 resting: `rgba(6, 214, 160, ${0.1 + heartPulse * 0.05})`,
                 idle: `rgba(168, 85, 247, ${0.08 + heartPulse * 0.05})`,
-                traveling: `rgba(255,255,255, ${0.06 + heartPulse * 0.04})`,
+                traveling: `rgba(100,100,120, ${0.1 + heartPulse * 0.06})`,
                 posting: `rgba(29, 161, 242, ${0.15 + heartPulse * 0.1})`,
                 creating: `rgba(255, 0, 0, ${0.15 + heartPulse * 0.1})`,
                 defi: `rgba(0, 255, 136, ${0.15 + heartPulse * 0.1})`,
@@ -1210,10 +1210,10 @@ function renderWorld() {
 
         ctx.beginPath();
         ctx.arc(ax, ay, a.alive ? 6 : 4, 0, Math.PI * 2);
-        ctx.fillStyle = a.alive ? a.color : '#555';
+        ctx.fillStyle = a.alive ? a.color : '#bbb';
         ctx.fill();
         if (a.alive) {
-            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
             ctx.lineWidth = 1;
             ctx.stroke();
         }
@@ -1223,11 +1223,11 @@ function renderWorld() {
         ctx.fillText(a.alive ? a.emoji : '💀', ax, ay - 11);
 
         ctx.font = '8px Inter, sans-serif';
-        ctx.fillStyle = a.alive ? 'rgba(255,255,255,0.55)' : 'rgba(255,100,100,0.4)';
+        ctx.fillStyle = a.alive ? 'rgba(0,0,0,0.55)' : 'rgba(200,50,50,0.5)';
         ctx.fillText(a.name, ax, ay + 16);
         if (a.alive) {
             ctx.font = '7px JetBrains Mono, monospace';
-            ctx.fillStyle = a.money < 20 ? 'rgba(239,68,68,0.7)' : 'rgba(6,214,160,0.5)';
+            ctx.fillStyle = a.money < 20 ? 'rgba(220,38,38,0.7)' : 'rgba(5,150,105,0.6)';
             ctx.fillText(a.money.toFixed(0) + ' Crypto', ax, ay + 24);
         }
 
@@ -1244,16 +1244,16 @@ function renderWorld() {
     const dead = agents.filter(a => !a.alive).length;
     ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
     const timeIcon = hour >= 6 && hour < 18 ? '☀️' : '🌙';
     ctx.fillText(`${timeIcon} ${hour >= 6 && hour < 18 ? 'Day' : 'Night'}  |  Alive: ${alive}  |  Dead: ${dead}  |  Gen of Life: active`, 10, 18);
 
     const hbPulse = Math.sin(worldTime * 0.1) * 0.5 + 0.5;
-    ctx.fillStyle = `rgba(0, 240, 255, ${0.3 + hbPulse * 0.4})`;
+    ctx.fillStyle = `rgba(124, 58, 237, ${0.4 + hbPulse * 0.4})`;
     ctx.beginPath();
     ctx.arc(w - 20, 15, 4 + hbPulse * 2, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
     ctx.textAlign = 'right';
     ctx.fillText('♥ heartbeat', w - 30, 18);
 }
