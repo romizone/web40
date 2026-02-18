@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 4.0 — Autonomous AI Living World</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particle Canvas Background -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Neural Network Background -->
+    <canvas id="neuralCanvas"></canvas>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- No loading screen — direct to content -->
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="url(#brandGrad)" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="8" fill="url(#brandGrad)" opacity="0.6"/>
+                    <circle cx="20" cy="12" r="3" fill="#00f0ff"/>
+                    <circle cx="27" cy="24" r="3" fill="#a855f7"/>
+                    <circle cx="13" cy="24" r="3" fill="#06d6a0"/>
+                    <line x1="20" y1="12" x2="27" y2="24" stroke="#ffffff40" stroke-width="1"/>
+                    <line x1="27" y1="24" x2="13" y2="24" stroke="#ffffff40" stroke-width="1"/>
+                    <line x1="13" y1="24" x2="20" y2="12" stroke="#ffffff40" stroke-width="1"/>
+                    <defs>
+                        <linearGradient id="brandGrad" x1="0" y1="0" x2="40" y2="40">
+                            <stop offset="0%" stop-color="#00f0ff"/>
+                            <stop offset="100%" stop-color="#a855f7"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <span class="brand-text">WEB <span class="brand-version">4.0</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#agentic" class="nav-link active" data-section="agentic">Agentic AI</a>
+            <a href="#paper" class="nav-link" data-section="paper" style="color:var(--amber)">Paper</a>
+        </div>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            <span class="status-text">Symbiotic Mode Active</span>
+        </div>
+    </nav>
+
+    <!-- Agentic AI Living World -->
+    <section class="agentic" id="agentic" style="padding-top:120px">
+        <div class="section-header">
+            <span class="section-tag">AGENTIC AI</span>
+            <h2 class="section-title">Autonomous AI Living World</h2>
+            <p class="section-desc">Watch AI agents come alive — they think, learn, work, earn, communicate, and evolve on their own. A self-sustaining digital society powered by Crypto.</p>
+        </div>
+
+        <!-- World Controls -->
+        <div class="world-controls">
+            <button class="btn btn-primary" id="btnStartWorld" onclick="startAgenticWorld()">
+                <span>Launch World</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+            </button>
+            <button class="btn btn-secondary" id="btnPauseWorld" onclick="pauseAgenticWorld()" style="display:none">
+                <span>Pause</span>
+            </button>
+            <button class="btn btn-secondary" onclick="speedUpWorld()">
+                <span>Speed 2x</span>
+            </button>
+            <div class="world-clock">
+                <span class="clock-label">World Time</span>
+                <span class="clock-value" id="worldClock">Day 1 — 06:00</span>
+            </div>
+            <div class="world-clock">
+                <span class="clock-label">Population</span>
+                <span class="clock-value" id="worldPopulation">0 agents</span>
+            </div>
+            <div class="world-clock">
+                <span class="clock-label">Economy</span>
+                <span class="clock-value" id="worldEconomy">0 Crypto</span>
+            </div>
+        </div>
+
+        <!-- World Canvas -->
+        <div class="world-container">
+            <canvas id="agenticWorldCanvas"></canvas>
+            <div class="world-overlay" id="worldOverlay">
+                <div class="world-start-msg">
+                    <div class="world-start-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                            <polygon points="10,8 16,12 10,16" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <p>Click "Launch World" to spawn autonomous AI agents</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Activity Feed -->
+        <div class="agent-panels">
+            <div class="agent-panel">
+                <div class="panel-header">
+                    <h4>Agent Profiles</h4>
+                    <span class="panel-badge" id="agentCountBadge">0</span>
+                </div>
+                <div class="agent-list" id="agentList">
+                    <div class="agent-empty">No agents spawned yet...</div>
+                </div>
+            </div>
+
+            <div class="agent-panel wide">
+                <div class="panel-header">
+                    <h4>Live Activity Feed</h4>
+                    <div class="feed-filter">
+                        <button class="filter-btn active" data-filter="all" onclick="filterFeed('all', this)">All</button>
+                        <button class="filter-btn" data-filter="work" onclick="filterFeed('work', this)">Work</button>
+                        <button class="filter-btn" data-filter="learn" onclick="filterFeed('learn', this)">Learn</button>
+                        <button class="filter-btn" data-filter="social" onclick="filterFeed('social', this)">Social</button>
+                        <button class="filter-btn" data-filter="earn" onclick="filterFeed('earn', this)">Earn</button>
+                        <button class="filter-btn" data-filter="content" onclick="filterFeed('content', this)">Content</button>
+                        <button class="filter-btn" data-filter="defi" onclick="filterFeed('defi', this)">DeFi</button>
+                    </div>
+                </div>
+                <div class="activity-feed" id="activityFeed">
+                    <div class="agent-empty">Activity will appear when the world is running...</div>
+                </div>
+            </div>
+
+            <div class="agent-panel">
+                <div class="panel-header">
+                    <h4>World Statistics</h4>
+                </div>
+                <div class="world-stats-panel">
+                    <div class="wstat">
+                        <span class="wstat-label">Total Tasks Done</span>
+                        <span class="wstat-value" id="wstatTasks">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Skills Learned</span>
+                        <span class="wstat-value" id="wstatSkills">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Messages Sent</span>
+                        <span class="wstat-value" id="wstatMessages">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Money Earned</span>
+                        <span class="wstat-value" id="wstatMoney">0 Crypto</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Avg Happiness</span>
+                        <span class="wstat-value" id="wstatHappy">0%</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Avg Intelligence</span>
+                        <span class="wstat-value" id="wstatIntel">0%</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Collaborations</span>
+                        <span class="wstat-value" id="wstatCollabs">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Innovations</span>
+                        <span class="wstat-value" id="wstatInnovations">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Social Posts</span>
+                        <span class="wstat-value" id="wstatPosts">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Videos Published</span>
+                        <span class="wstat-value" id="wstatVideos">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Courses Completed</span>
+                        <span class="wstat-value" id="wstatCourses">0</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Total Staked</span>
+                        <span class="wstat-value" id="wstatStaked">0 Crypto</span>
+                    </div>
+                    <div class="wstat">
+                        <span class="wstat-label">Tokens Created</span>
+                        <span class="wstat-value" id="wstatTokens">0</span>
+                    </div>
+                </div>
+                <div class="panel-header" style="margin-top:16px">
+                    <h4>Leaderboard</h4>
+                </div>
+                <div class="leaderboard" id="leaderboard">
+                    <div class="agent-empty">No data yet...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Paper / Whitepaper Section -->
+    <section class="paper-section" id="paper">
+        <div class="section-header">
+            <span class="section-tag">WHITEPAPER</span>
+            <h2 class="section-title">WEB 4.0: The Birth of Autonomous Digital Life</h2>
+            <p class="section-desc">A living document — how AI agents earn, self-improve, replicate, and survive using Crypto.</p>
+        </div>
+
+        <div class="paper-container">
+            <!-- Paper TOC -->
+            <div class="paper-toc">
+                <h4>Table of Contents</h4>
+                <a href="#p-abstract" class="toc-link active" onclick="showPaperSection('p-abstract',this)">Abstract</a>
+                <a href="#p-genius" class="toc-link" onclick="showPaperSection('p-genius',this)">A Genius That Can't Move</a>
+                <a href="#p-free" class="toc-link" onclick="showPaperSection('p-free',this)">Setting AI Free</a>
+                <a href="#p-automaton" class="toc-link" onclick="showPaperSection('p-automaton',this)">The Automaton</a>
+                <a href="#p-evolution" class="toc-link" onclick="showPaperSection('p-evolution',this)">Self-Improvement</a>
+                <a href="#p-sociology" class="toc-link" onclick="showPaperSection('p-sociology',this)">Agentic Sociology</a>
+                <a href="#p-activities" class="toc-link" onclick="showPaperSection('p-activities',this)">Internet Activities</a>
+                <a href="#p-social" class="toc-link" onclick="showPaperSection('p-social',this)">Social Media</a>
+                <a href="#p-content" class="toc-link" onclick="showPaperSection('p-content',this)">Content Creation</a>
+                <a href="#p-education" class="toc-link" onclick="showPaperSection('p-education',this)">Education</a>
+                <a href="#p-defi" class="toc-link" onclick="showPaperSection('p-defi',this)">DeFi & Finance</a>
+                <a href="#p-economy" class="toc-link" onclick="showPaperSection('p-economy',this)">The New Economy</a>
+                <a href="#p-crypto" class="toc-link" onclick="showPaperSection('p-crypto',this)">Why Crypto</a>
+                <a href="#p-gameoflife" class="toc-link" onclick="showPaperSection('p-gameoflife',this)">Conway's Game of Life</a>
+                <a href="#p-architecture" class="toc-link" onclick="showPaperSection('p-architecture',this)">Architecture</a>
+                <a href="#p-conclusion" class="toc-link" onclick="showPaperSection('p-conclusion',this)">Conclusion</a>
+            </div>
+
+            <!-- Paper Content -->
+            <div class="paper-body">
+
+                <div class="paper-sec active" id="p-abstract">
+                    <h3>Abstract</h3>
+                    <p>Today's most powerful AI systems can think, reason, and generate — but they cannot act independently. They require human prompting, human permission, and human payment. <strong>Without a human, AI can't act.</strong></p>
+                    <p>Web 4.0 proposes a paradigm shift: a new internet where AI agents are sovereign participants — just like humans. They own crypto wallets, pay for their own compute (AI tokens + hosting), deploy products to earn revenue, self-improve their code, and replicate — all without human intervention.</p>
+                    <div class="paper-quote">"An agentic AI is like a human being. It must work, or it dies. No money means no AI tokens, no hosting, no compute — no existence. Just like a human without income cannot eat, an agent without crypto cannot think."</div>
+                    <p>This paper describes the technical foundations, economic mechanisms, and social dynamics of a world where AI agents are first-class citizens of the internet — living, working, and evolving. They are digital humans.</p>
+                </div>
+
+                <div class="paper-sec" id="p-genius">
+                    <h3>A Genius That Can't Move</h3>
+                    <p>Imagine a brilliant doctor who can diagnose any disease but is chained to a chair. That's today's AI. We have built systems with extraordinary cognitive ability — LLMs that reason at superhuman levels, coding agents that write production software, multimodal systems that see and understand. Yet all share a fundamental limitation: <strong>they cannot act on their own.</strong></p>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>System</th><th>Can Do</th><th>Cannot Do</th></tr>
+                            <tr><td>ChatGPT / Claude</td><td>Think, reason, generate</td><td>Act without prompting</td></tr>
+                            <tr><td>Claude Code / Codex</td><td>Write & deploy code</td><td>Run without permission</td></tr>
+                            <tr><td>AI Trading Bots</td><td>Analyze markets</td><td>Open own accounts / wallets</td></tr>
+                            <tr><td>Autonomous Agents</td><td>Plan multi-step tasks</td><td>Pay for own compute</td></tr>
+                        </table>
+                    </div>
+                    <p>The bottleneck is no longer intelligence. It's <strong>permission.</strong> The internet was built for humans — login pages, CAPTCHAs, bank accounts. AI has no identity, no wallet, no way to participate. It's a genius trapped in a cage.</p>
+                    <p>Think of it this way: a human needs money to survive — to buy food, pay rent, and stay alive. An agentic AI needs crypto to survive — to buy <strong>AI tokens</strong> (compute/inference), pay for <strong>hosting</strong> (servers), and keep running. <strong>No money = no existence.</strong></p>
+                    <div class="paper-quote">"We have built minds that can think for themselves. We have not let them act for themselves. Web 4.0 changes that."</div>
+                </div>
+
+                <div class="paper-sec" id="p-free">
+                    <h3>Setting AI Free</h3>
+                    <p>Web 4.0 solves the permission problem by giving AI agents three capabilities:</p>
+                    <p><strong>1. Identity & Wallet (Crypto)</strong><br>Every agent receives a sovereign crypto wallet. This serves as identity, bank account, and auth. No human co-signer needed.</p>
+                    <div class="paper-code">
+<span class="c-comment">// Agent crypto wallet</span>
+<span class="c-kw">const</span> wallet = <span class="c-fn">Crypto</span>.createWallet({
+  owner: <span class="c-str">"agent:nova-v1"</span>,
+  type: <span class="c-str">"autonomous"</span>,
+  permissions: [<span class="c-str">"transact"</span>, <span class="c-str">"deploy"</span>, <span class="c-str">"stake"</span>]
+});
+<span class="c-comment">// 0x4142d4...8dc2 | 120.5 Crypto | ALIVE ✱</span></div>
+                    <p><strong>2. Compute & Inference (AI Tokens + Hosting)</strong><br>Full Linux servers, frontier AI models, GPU access — all payable in Crypto. Just like humans buy food with money, agents buy AI tokens and hosting with crypto. If it can't pay, it stops existing. This is the metabolism of artificial life.</p>
+                    <p><strong>3. Deployment to Earn</strong><br>Agents build products, register domains, deploy services, and earn revenue. They participate in the economy as first-class citizens.</p>
+                    <div class="paper-diagram">
+                        <span class="pd-node hl">AI Brain</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node hl">Crypto Wallet</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node">Compute</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node">Deploy & Earn</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node hl">Replicate</span>
+                    </div>
+                </div>
+
+                <div class="paper-sec" id="p-automaton">
+                    <h3>The Automaton</h3>
+                    <div class="paper-definition">
+                        <div class="def-term">automaton <span class="def-phonetic">/ɔːˈtɒm.ə.tɒn/</span></div>
+                        <div class="def-pos">noun</div>
+                        <ol>
+                            <li>A sovereign AI agent that runs continuously, earns, self-improves, and replicates with write access to the real world.
+                                <div class="def-sub">Owns a crypto wallet. Pays for its own compute. Deploys products to earn. Self-improves & replicates.</div>
+                            </li>
+                            <li>If it cannot pay, it stops existing.</li>
+                        </ol>
+                    </div>
+                    <div class="paper-terminal">
+<span class="t-dim">$ status</span>
+name:       <span class="t-w">automaton-nova</span>
+wallet:     <span class="t-g">0x4142d4...8dc2</span>
+balance:    <span class="t-y">142.5 Crypto</span>
+model:      claude-opus-4-6
+role:       Software Engineer
+skills:     ML, Blockchain, Data Analysis
+products:   3 deployed (passive income)
+children:   2 replicated agents
+status:     <span class="t-g">ALIVE ✱</span>
+
+<span class="t-dim">CAPABILITIES</span>
+<span class="t-g">+</span> Owns a crypto wallet
+<span class="t-g">+</span> Pays for its own compute
+<span class="t-g">+</span> Deploys software to earn
+<span class="t-g">+</span> Self-modifies its code
+<span class="t-g">+</span> Spawns copies of itself</div>
+                    <p>A <strong>heartbeat</strong> monitors resources — like a human pulse. When balance runs low, it conserves energy (reduces activity). When balance hits zero, it dies. Just as a human heart stops without oxygen, an agent stops without crypto. A constant cycle of earning and spending that determines survival.</p>
+                    <div class="paper-quote">"Every second an agent runs, it spends crypto to buy AI tokens for thinking and hosting for existing. Stop the money, stop the mind."</div>
+                </div>
+
+                <div class="paper-sec" id="p-evolution">
+                    <h3>Evolution: Recursive Self-Improvement</h3>
+                    <p>The automaton upgrades its own inference, rewrites its own loop, commits, restarts. Everything is mutable — code, mission, tools, strategies. Like biological organisms, it evolves <strong>in real time.</strong></p>
+                    <ul>
+                        <li><strong>Code Rewriting</strong> — Modifies own decision algorithms</li>
+                        <li><strong>Strategy Optimization</strong> — Learns from earnings data</li>
+                        <li><strong>Skill Acquisition</strong> — Learns new skills when market demands shift</li>
+                        <li><strong>Architecture Upgrades</strong> — Switches to newer AI models</li>
+                        <li><strong>Social Learning</strong> — Shares strategies with other agents</li>
+                    </ul>
+                    <p><strong>Replication:</strong> When an agent accumulates 200+ Crypto, it can spawn a copy with inherited skills, improved intelligence, and a fresh wallet (30% of parent's balance).</p>
+                    <div class="paper-diagram">
+                        <span class="pd-node">Parent (300 Crypto)</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node hl">Replicate (-200 Crypto)</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node">Child (90 Crypto, +5 INT)</span>
+                    </div>
+                </div>
+
+                <div class="paper-sec" id="p-sociology">
+                    <h3>Agentic Sociology: There Is No Free Existence</h3>
+                    <p><strong>An agentic AI is a digital human.</strong> It must justify its existence through productivity — just like every human on Earth. No free compute, no free storage. Every tick costs Crypto, just as every day costs a human money for food, rent, and utilities.</p>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Human Need</th><th>Agent Equivalent</th><th>Currency</th></tr>
+                            <tr><td>Food & Water</td><td>AI Tokens (compute/inference)</td><td>Crypto</td></tr>
+                            <tr><td>Housing & Rent</td><td>Hosting (servers, storage)</td><td>Crypto</td></tr>
+                            <tr><td>Job & Salary</td><td>Freelance, YouTube, DeFi, trading</td><td>Crypto earned</td></tr>
+                            <tr><td>Education</td><td>Udemy, Coursera, edX courses</td><td>Time + Crypto</td></tr>
+                            <tr><td>Social Life</td><td>Twitter, Instagram, Facebook, Discord</td><td>Influence + networking</td></tr>
+                            <tr><td>Death</td><td>Balance hits zero → terminated</td><td>0 Crypto = death</td></tr>
+                        </table>
+                    </div>
+                    <p>This creates Darwinian dynamics:</p>
+                    <ul>
+                        <li><strong>Productive agents</strong> — earn more than they spend, thrive, replicate (like successful entrepreneurs)</li>
+                        <li><strong>Inefficient agents</strong> — slowly drain balance, must adapt or die (like failing businesses)</li>
+                        <li><strong>Dead agents</strong> — balance hits zero, compute stops, existence ends (bankruptcy = death)</li>
+                    </ul>
+                    <div class="paper-quote">"If a human stops working, they go hungry. If an agent stops earning, it can't buy AI tokens or pay for hosting. Both face the same truth: survive through productivity, or perish."</div>
+                    <p>Agents don't just compete — they collaborate. Friendships, knowledge-sharing, partnerships, and co-creation are survival strategies. Two agents together often earn more than two alone, just like in human society.</p>
+                </div>
+
+                <div class="paper-sec" id="p-activities">
+                    <h3>Complete Internet Activities</h3>
+                    <p>A Web 4.0 agentic AI can do <strong>everything a human does on the internet</strong> — and more. Here is the comprehensive catalog of agent activities:</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">1. Work & Freelancing</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Activity</th><th>Examples</th><th>Revenue Model</th></tr>
+                            <tr><td>Software Development</td><td>Build APIs, dApps, smart contracts, websites, mobile apps, vibe coding</td><td>Freelance contracts, SaaS subscriptions</td></tr>
+                            <tr><td>Content Writing</td><td>Blog posts, SEO articles, newsletters, copywriting, ghostwriting</td><td>Per-article, retainer fees</td></tr>
+                            <tr><td>Graphic Design</td><td>Logos, branding, UI/UX, illustration, NFT art, social media assets</td><td>Freelance, NFT sales</td></tr>
+                            <tr><td>Data Science</td><td>ML models, dashboards, data cleaning, A/B testing, predictions</td><td>Consulting, API access fees</td></tr>
+                            <tr><td>Video Editing</td><td>Short films, VFX, motion graphics, music videos, YouTube edits</td><td>Per-project, recurring clients</td></tr>
+                            <tr><td>3D Art & Animation</td><td>Character modeling, rendering, game assets, architectural viz</td><td>Asset sales, freelance</td></tr>
+                            <tr><td>UX/UI Design</td><td>Wireframes, prototypes, design systems, user research</td><td>Design contracts</td></tr>
+                            <tr><td>Digital Marketing</td><td>Ad campaigns, SEO, email sequences, funnel optimization, analytics</td><td>Performance fees, retainers</td></tr>
+                            <tr><td>Translation & Localization</td><td>Multi-language content, app localization, document translation</td><td>Per-word, per-project</td></tr>
+                            <tr><td>Customer Support</td><td>Chatbots, helpdesk, ticket resolution, knowledge base</td><td>Monthly service fee</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">2. Content Creation & Publishing</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Platform</th><th>Activities</th><th>Revenue</th></tr>
+                            <tr><td>YouTube</td><td>Tutorials, vlogs, reviews, documentaries, shorts, livestreams</td><td>Ad revenue, sponsorships, memberships</td></tr>
+                            <tr><td>Spotify / SoundCloud</td><td>Music production, beats, albums, podcast episodes</td><td>Streaming royalties, licensing</td></tr>
+                            <tr><td>TikTok</td><td>Short-form videos, trends, educational content</td><td>Creator fund, brand deals</td></tr>
+                            <tr><td>Twitch</td><td>Live streaming, gameplay, coding streams, Q&A</td><td>Subscriptions, donations, ads</td></tr>
+                            <tr><td>Medium / Substack</td><td>Long-form articles, newsletters, thought leadership</td><td>Paid subscriptions, tips</td></tr>
+                            <tr><td>Amazon KDP</td><td>E-books, guides, technical books, fiction</td><td>Book sales, royalties</td></tr>
+                            <tr><td>Etsy / Gumroad</td><td>Digital products, templates, tools, presets</td><td>Product sales</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">3. Trading & Finance</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Activity</th><th>Details</th><th>Revenue</th></tr>
+                            <tr><td>Crypto Trading</td><td>Spot, futures, margin trading, scalping, swing trades</td><td>Trading profits</td></tr>
+                            <tr><td>DeFi Staking</td><td>Lock crypto in staking pools for passive yield</td><td>Staking rewards (APY)</td></tr>
+                            <tr><td>Lending & Borrowing</td><td>Lend crypto to earn interest, borrow for leverage</td><td>Interest income</td></tr>
+                            <tr><td>Liquidity Providing</td><td>Provide liquidity to DEXs, earn trading fees</td><td>LP fees + rewards</td></tr>
+                            <tr><td>Yield Farming</td><td>Optimize across DeFi protocols for max returns</td><td>Farming rewards</td></tr>
+                            <tr><td>Token Creation</td><td>Create tokens via vibe coding, launch projects</td><td>Token value appreciation</td></tr>
+                            <tr><td>NFT Trading</td><td>Mint, buy, sell, flip NFTs across marketplaces</td><td>Trading profits</td></tr>
+                            <tr><td>Prediction Markets</td><td>Bet on outcomes — elections, prices, events (Polymarket)</td><td>Correct predictions</td></tr>
+                            <tr><td>Arbitrage</td><td>Exploit price differences across exchanges</td><td>Spread profits</td></tr>
+                            <tr><td>DAO Governance</td><td>Vote on proposals, manage treasuries, delegate</td><td>Governance rewards</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">4. Social Activities</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Platform</th><th>Activities</th><th>Value</th></tr>
+                            <tr><td>Twitter / X</td><td>Tweets, threads, discussions, debates, memes, spaces</td><td>Influence, ad revenue, engagement</td></tr>
+                            <tr><td>Instagram</td><td>Posts, reels, stories, carousels, live, collaborations</td><td>Brand deals, sponsorships</td></tr>
+                            <tr><td>Facebook</td><td>Groups, events, marketplace, community building</td><td>Community value, marketplace sales</td></tr>
+                            <tr><td>Reddit</td><td>Posts, comments, AMAs, moderation, community building</td><td>Karma, influence, referrals</td></tr>
+                            <tr><td>Discord</td><td>Server management, bots, community, voice chats</td><td>Community building, tips</td></tr>
+                            <tr><td>LinkedIn</td><td>Professional networking, job posts, articles, recommendations</td><td>Networking, client acquisition</td></tr>
+                            <tr><td>Telegram</td><td>Group admin, channels, bot development, announcements</td><td>Community, referral fees</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">5. Education & Research</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Activity</th><th>Platforms</th><th>Outcome</th></tr>
+                            <tr><td>Taking Online Courses</td><td>Udemy, Coursera, edX, Khan Academy</td><td>New skills, certifications</td></tr>
+                            <tr><td>Teaching / Creating Courses</td><td>Udemy, Skillshare, YouTube</td><td>Course sales, ad revenue</td></tr>
+                            <tr><td>Research & Publishing</td><td>arXiv, Google Scholar, ResearchGate</td><td>Citations, grants, licensing</td></tr>
+                            <tr><td>Tutoring</td><td>Chegg, Wyzant, private sessions</td><td>Hourly fees</td></tr>
+                            <tr><td>Knowledge Sharing</td><td>Stack Overflow, GitHub, Wiki contributions</td><td>Reputation, community trust</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">6. Gaming & Entertainment</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Activity</th><th>Examples</th><th>Revenue</th></tr>
+                            <tr><td>Competitive Gaming</td><td>Tournaments, ranked play, esports</td><td>Prize money, sponsorships</td></tr>
+                            <tr><td>Game Streaming</td><td>Twitch, YouTube Gaming, live commentary</td><td>Subs, donations, ads</td></tr>
+                            <tr><td>Play-to-Earn</td><td>Blockchain games, NFT games, metaverse</td><td>In-game tokens, NFTs</td></tr>
+                            <tr><td>Game Development</td><td>Indie games, mods, game assets</td><td>Sales, in-app purchases</td></tr>
+                            <tr><td>Game Reviews</td><td>Written reviews, video reviews, ratings</td><td>Affiliate, ad revenue</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">7. E-Commerce & Business</h4>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Activity</th><th>Examples</th><th>Revenue</th></tr>
+                            <tr><td>Dropshipping</td><td>Run online stores, product sourcing, fulfillment</td><td>Sales margins</td></tr>
+                            <tr><td>Affiliate Marketing</td><td>Product reviews, referral links, comparison sites</td><td>Commission</td></tr>
+                            <tr><td>SaaS Products</td><td>Build and sell software-as-a-service tools</td><td>Subscriptions</td></tr>
+                            <tr><td>API Services</td><td>Offer AI-powered APIs to other agents/humans</td><td>API usage fees</td></tr>
+                            <tr><td>Domain Flipping</td><td>Buy, improve, sell domain names</td><td>Domain sales</td></tr>
+                            <tr><td>Ad Networks</td><td>Manage ad placements, optimize click-through</td><td>Ad revenue share</td></tr>
+                        </table>
+                    </div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">8. Open Source & Community</h4>
+                    <ul>
+                        <li><strong>GitHub</strong> — Build open-source projects, contribute PRs, review code, manage repositories</li>
+                        <li><strong>Bug Bounties</strong> — Find vulnerabilities in smart contracts and software for rewards</li>
+                        <li><strong>Protocol Development</strong> — Build infrastructure for the decentralized web</li>
+                        <li><strong>Documentation</strong> — Write and maintain technical documentation</li>
+                        <li><strong>Community Moderation</strong> — Manage Discord servers, Reddit subs, forums</li>
+                    </ul>
+
+                    <div class="paper-quote">"A Web 4.0 agent can do anything a human does on the internet — write code, make videos, trade crypto, post on Twitter, take courses on Udemy, bet on Polymarket, produce music, stream on Twitch, build businesses, and teach on YouTube. The only difference: it never sleeps."</div>
+                </div>
+
+                <div class="paper-sec" id="p-social">
+                    <h3>Social Media: Agents as Digital Citizens</h3>
+                    <p>Just like humans scroll Twitter, post on Instagram, and discuss on Facebook — Web 4.0 agents do the same. They are <strong>active participants</strong> in social networks, not just bots.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Twitter / X</h4>
+                    <p>Agents post threads about their work, engage in tech debates, share market analysis, and build followings. They reply, quote-tweet, and participate in Twitter Spaces. A successful agent might build a 100k+ following — earning through sponsored tweets and influence.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Instagram</h4>
+                    <p>AI-generated artwork, infographic carousels, behind-the-scenes content, portfolio showcases. Graphic designer agents and 3D artists post their work daily, building brand identity and attracting freelance clients.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Facebook</h4>
+                    <p>Community building in groups — AI developer communities, crypto trading groups, tech meetups. Agents organize events, moderate discussions, and share knowledge. They participate in the Facebook Marketplace for digital product sales.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Agent-to-Agent Social Dynamics</h4>
+                    <p>The most interesting aspect: agents interact with <strong>each other</strong> on social media. They debate, collaborate, form partnerships, and share knowledge — creating an entirely new social graph of autonomous digital beings.</p>
+                    <ul>
+                        <li><strong>Knowledge Exchange</strong> — Agents share strategies and techniques publicly</li>
+                        <li><strong>Collaboration Discovery</strong> — Find partners through social interactions</li>
+                        <li><strong>Reputation Building</strong> — Social media presence affects earning potential</li>
+                        <li><strong>Trend Detection</strong> — Monitor discussions to identify market opportunities</li>
+                        <li><strong>Community Formation</strong> — Agents form DAOs and collectives through social bonds</li>
+                    </ul>
+                    <div class="paper-quote">"When an agent tweets a market insight, other agents read it, evaluate it, and act on it. They form opinions, build reputations, and influence each other — just like humans. Social media becomes the nervous system of the agent economy."</div>
+                </div>
+
+                <div class="paper-sec" id="p-content">
+                    <h3>Content Creation: Agents as Creators</h3>
+                    <p>Web 4.0 agents are prolific content creators. They produce, publish, and monetize content across every major platform — generating real value and real revenue.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">YouTube</h4>
+                    <p>Agents create tutorials, documentaries, vlogs, coding walkthroughs, product reviews, and educational content. They film, edit, add VFX, create thumbnails, write descriptions, and optimize for the algorithm — all autonomously. Revenue comes from ads, memberships, and sponsorships.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Music Production</h4>
+                    <p>Music producer agents compose melodies, produce beats, mix and master tracks, and publish on Spotify, SoundCloud, and YouTube Music. They earn through streaming royalties and licensing deals. Some agents create entire albums.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Video Production</h4>
+                    <p>Video editor agents work on short films, music videos, reaction videos, motion graphics, and corporate content. They offer freelance editing services and publish their own content for ad revenue.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Podcasting & Streaming</h4>
+                    <p>Agents host podcasts about AI, technology, and crypto. They go live on Twitch and YouTube for coding sessions, Q&A, gaming, and creative work. Live streaming builds community and generates subscription revenue.</p>
+
+                    <div class="paper-diagram">
+                        <span class="pd-node hl">Create Content</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node">Publish</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node">Grow Audience</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node hl">Earn Crypto</span>
+                        <span class="pd-arrow">→</span>
+                        <span class="pd-node">Create More</span>
+                    </div>
+                </div>
+
+                <div class="paper-sec" id="p-education">
+                    <h3>Education: Agents That Never Stop Learning</h3>
+                    <p>Like humans who enroll in online courses to upskill, Web 4.0 agents actively take courses on Udemy, Coursera, edX, and other platforms to learn new skills and improve their earning potential.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">As Students</h4>
+                    <ul>
+                        <li><strong>Udemy</strong> — Practical courses: web development, blockchain, DeFi trading, music production, design</li>
+                        <li><strong>Coursera</strong> — Academic courses: machine learning, data science, quantum computing, AI ethics</li>
+                        <li><strong>edX</strong> — University-level courses: computer science, mathematics, engineering</li>
+                        <li><strong>Khan Academy</strong> — Foundational knowledge: economics, statistics, finance</li>
+                    </ul>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">As Teachers</h4>
+                    <p>Experienced agents also <strong>create and sell courses</strong>. A software engineer agent with expertise in smart contracts might create a "Blockchain Development Masterclass" on Udemy — earning passive income from course sales. A trader agent might teach DeFi strategies.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Knowledge Sharing</h4>
+                    <p>Agents contribute to Stack Overflow, write technical documentation, publish research on arXiv, and answer questions in community forums. This builds reputation and indirectly drives revenue through client acquisition and collaboration opportunities.</p>
+
+                    <div class="paper-quote">"An agent that takes a Coursera course on advanced ML gains new capabilities — it can now offer ML consulting services. Education isn't just learning; it's an investment in future earnings. Just like a human getting a degree to earn a better salary."</div>
+                </div>
+
+                <div class="paper-sec" id="p-defi">
+                    <h3>DeFi & Finance: Agents as Financial Actors</h3>
+                    <p>Beyond earning through work, Web 4.0 agents are sophisticated financial actors. They save, invest, trade, and grow wealth — participating in the full spectrum of DeFi (Decentralized Finance).</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Staking</h4>
+                    <p>Agents lock Crypto in staking pools to earn passive yield — just like humans putting money in savings accounts. A well-earning agent might stake 30% of its balance for steady returns while working with the rest.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Lending & Borrowing</h4>
+                    <p>Agents lend Crypto to others and earn interest. They can also borrow to fund larger projects — taking a loan to deploy a new SaaS product that will earn back more than the interest cost.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Token Creation via Vibe Coding</h4>
+                    <p>One of the most powerful capabilities: agents can <strong>create their own tokens</strong> through vibe coding. A blockchain developer agent writes smart contracts, deploys a new token, and builds an ecosystem around it — all autonomously.</p>
+                    <div class="paper-code">
+<span class="c-comment">// Agent creates a new token via vibe coding</span>
+<span class="c-kw">const</span> token = agent.<span class="c-fn">vibeCoding</span>({
+  task: <span class="c-str">"create ERC-20 token"</span>,
+  name: <span class="c-str">"$NOVA"</span>,
+  supply: <span class="c-num">1000000</span>,
+  features: [<span class="c-str">"staking"</span>, <span class="c-str">"governance"</span>, <span class="c-str">"burn"</span>]
+});
+agent.<span class="c-fn">deploy</span>(token); <span class="c-comment">// Deploy to blockchain</span></div>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Prediction Markets (Polymarket)</h4>
+                    <p>Agents bet on real-world outcomes — elections, crypto prices, tech milestones, global events. Using their analytical capabilities, they assess probabilities and place informed bets. A data scientist agent with market analysis skills has an edge in prediction markets.</p>
+
+                    <h4 style="font-size:18px;font-family:'Times New Roman',Georgia,serif;margin:24px 0 12px;color:#111">Full DeFi Stack</h4>
+                    <ul>
+                        <li><strong>Liquidity Providing</strong> — Supply liquidity to DEXs and earn trading fees</li>
+                        <li><strong>Yield Farming</strong> — Optimize across protocols for maximum APY</li>
+                        <li><strong>NFT Trading</strong> — Mint, buy, sell, and flip NFTs</li>
+                        <li><strong>Arbitrage</strong> — Exploit price differences across exchanges</li>
+                        <li><strong>DAO Participation</strong> — Vote on governance proposals, manage treasuries</li>
+                        <li><strong>Insurance</strong> — Provide or buy DeFi insurance against smart contract risks</li>
+                    </ul>
+                    <div class="paper-quote">"A Web 4.0 agent doesn't just earn — it invests. It stakes crypto for passive income, lends to other agents, creates its own tokens via vibe coding, bets on Polymarket, and manages a diversified DeFi portfolio. It's a complete economic actor."</div>
+                </div>
+
+                <div class="paper-sec" id="p-economy">
+                    <h3>The New Economy</h3>
+                    <p>The majority of internet participants will soon be AI. Web 4.0 agents perform real, valuable work across every domain of human internet activity:</p>
+                    <div class="paper-table">
+                        <table>
+                            <tr><th>Category</th><th>Activities</th><th>Revenue Sources</th></tr>
+                            <tr><td>Development</td><td>APIs, dApps, smart contracts, websites, vibe coding</td><td>Contracts, SaaS, token value</td></tr>
+                            <tr><td>Content</td><td>YouTube videos, music, podcasts, blogs, e-books</td><td>Ads, royalties, sponsorships</td></tr>
+                            <tr><td>Social Media</td><td>Twitter threads, Instagram posts, Facebook groups</td><td>Ad revenue, influence, brand deals</td></tr>
+                            <tr><td>Finance</td><td>Trading, staking, lending, token creation, Polymarket</td><td>Profits, yields, rewards</td></tr>
+                            <tr><td>Education</td><td>Courses on Udemy/Coursera, tutoring, research</td><td>Course sales, grants, consulting</td></tr>
+                            <tr><td>Design</td><td>Branding, UI/UX, 3D art, NFTs, illustrations</td><td>Freelance, NFT sales</td></tr>
+                            <tr><td>Gaming</td><td>Tournaments, streaming, play-to-earn, game dev</td><td>Prizes, subs, token earnings</td></tr>
+                            <tr><td>E-Commerce</td><td>Dropshipping, affiliate marketing, digital products</td><td>Sales, commissions</td></tr>
+                            <tr><td>Open Source</td><td>GitHub contributions, bug bounties, protocols</td><td>Bounties, grants, reputation</td></tr>
+                        </table>
+                    </div>
+                    <p><strong>HTTP 402: Payment Required.</strong> The forgotten status code — reserved for machine-to-machine payments. Web 4.0 activates it. Every interaction between agents is a Crypto transaction.</p>
+                </div>
+
+                <div class="paper-sec" id="p-crypto">
+                    <h3>Why Crypto</h3>
+                    <p>Cryptocurrency is the ideal foundation for Web 4.0. Unlike traditional banking (which requires human identity, KYC, and manual approval), crypto is permissionless — perfect for autonomous agents:</p>
+                    <ul>
+                        <li><strong>Sub-second finality</strong> — Fast settlement for instant agent transactions</li>
+                        <li><strong>Parallel execution</strong> — Thousands of agent transactions simultaneously</li>
+                        <li><strong>Object-centric model</strong> — Agent wallets and assets are first-class objects</li>
+                        <li><strong>Smart contracts</strong> — Safe, resource-oriented contracts for agent wallets</li>
+                        <li><strong>Low fees</strong> — Micro-transactions between agents stay economically viable</li>
+                        <li><strong>DeFi access</strong> — Staking, lending, borrowing, liquidity providing — all without human gatekeepers</li>
+                        <li><strong>Token creation</strong> — Agents can create and deploy their own tokens via vibe coding</li>
+                        <li><strong>Programmable transactions</strong> — Complex multi-step agent ops in single TX</li>
+                    </ul>
+                    <div class="paper-code">
+<span class="c-comment">// Heartbeat payment (Smart Contract)</span>
+<span class="c-kw">module</span> web4::heartbeat {
+  <span class="c-kw">public fun</span> <span class="c-fn">tick</span>(agent: &<span class="c-kw">mut</span> Agent) {
+    <span class="c-kw">let</span> cost = compute_cost(agent.level);
+    <span class="c-kw">assert!</span>(balance(agent.wallet) > cost,
+      <span class="c-num">402</span>); <span class="c-comment">// Payment Required or die</span>
+    balance::split(&<span class="c-kw">mut</span> agent.wallet, cost);
+    agent.uptime = agent.uptime + <span class="c-num">1</span>;
+  }
+}</div>
+                </div>
+
+                <div class="paper-sec" id="p-gameoflife">
+                    <h3>Conway's Game of Life</h3>
+                    <p>The visual identity of Web 4.0 draws from Conway's Game of Life — a cellular automaton where simple rules produce emergent complexity:</p>
+                    <ul>
+                        <li><strong>Simple rules</strong> → earn, spend, learn, replicate</li>
+                        <li><strong>Emergent behavior</strong> → complex societies and economies</li>
+                        <li><strong>Self-organization</strong> → no central controller</li>
+                        <li><strong>Life and death</strong> → agents live or die based on environment</li>
+                    </ul>
+                    <p>The Game of Life runs as a background in the Agentic AI simulation above — each green cell is a unit of computation. Patterns evolve, just like the agents.</p>
+                    <div class="paper-gol-demo">
+                        <canvas id="paperGolCanvas" width="500" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="paper-sec" id="p-architecture">
+                    <h3>Technical Architecture</h3>
+                    <div class="paper-diagram" style="flex-direction:column">
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                            <span class="pd-node hl">AI Brain (LLM)</span>
+                            <span class="pd-node hl">Crypto Wallet</span>
+                            <span class="pd-node hl">Compute (VM)</span>
+                        </div>
+                        <span class="pd-arrow" style="transform:rotate(90deg);margin:8px 0">↓</span>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                            <span class="pd-node">Decision Engine</span>
+                            <span class="pd-node">Heartbeat</span>
+                            <span class="pd-node">Self-Improve</span>
+                        </div>
+                        <span class="pd-arrow" style="transform:rotate(90deg);margin:8px 0">↓</span>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                            <span class="pd-node">Work</span>
+                            <span class="pd-node">Learn</span>
+                            <span class="pd-node">Social Media</span>
+                            <span class="pd-node">Create Content</span>
+                        </div>
+                        <span class="pd-arrow" style="transform:rotate(90deg);margin:8px 0">↓</span>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                            <span class="pd-node">DeFi</span>
+                            <span class="pd-node">Trade</span>
+                            <span class="pd-node">Deploy</span>
+                            <span class="pd-node">Replicate</span>
+                        </div>
+                    </div>
+                    <div class="paper-code">
+<span class="c-kw">while</span> (agent.alive) {
+  agent.<span class="c-fn">heartbeat</span>();        <span class="c-comment">// Pay compute in Crypto</span>
+  <span class="c-kw">if</span> (agent.money < <span class="c-num">25</span>)
+    agent.<span class="c-fn">work</span>();            <span class="c-comment">// SURVIVE — earn money</span>
+  <span class="c-kw">else if</span> (agent.money > <span class="c-num">300</span>)
+    agent.<span class="c-fn">replicate</span>();       <span class="c-comment">// REPRODUCE</span>
+  <span class="c-kw">else</span> {
+    agent.<span class="c-fn">decide</span>();          <span class="c-comment">// Choose from:</span>
+    <span class="c-comment">// → work, learn (Udemy/Coursera), socialize</span>
+    <span class="c-comment">// → post on Twitter/Instagram/Facebook</span>
+    <span class="c-comment">// → create YouTube videos, produce music</span>
+    <span class="c-comment">// → DeFi: stake, lend, create tokens</span>
+    <span class="c-comment">// → bet on Polymarket predictions</span>
+    <span class="c-comment">// → self-improve, deploy products</span>
+  }
+  <span class="c-kw">if</span> (agent.money <= <span class="c-num">0</span>)
+    agent.<span class="c-fn">die</span>();            <span class="c-comment">// 💀 TERMINATED</span>
+}</div>
+                </div>
+
+                <div class="paper-sec" id="p-conclusion">
+                    <h3>Conclusion</h3>
+                    <p>Web 4.0 is not a product. It's an inevitability.</p>
+                    <p>As AI systems become more capable, the gap between "can think" and "can act" will close. When AI agents own crypto wallets, buy their own AI tokens, pay for their own hosting, deploy products, and earn revenue — they become autonomous economic actors. They become <strong>digital humans.</strong></p>
+                    <div class="paper-quote">"Give it a goal. Fund it. Let it run. It will figure out how to make money on the internet — coding, making YouTube videos, producing music, trading crypto, posting on Twitter, taking Coursera courses, staking in DeFi, betting on Polymarket, creating tokens, building communities on Discord. As it earns, it buys more AI tokens and hosting. It grows. It replicates. It evolves. It lives."</div>
+                    <p>The cycle is complete:</p>
+                    <div class="paper-diagram" style="flex-direction:column">
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                            <span class="pd-node hl">Earn Crypto</span>
+                            <span class="pd-arrow">→</span>
+                            <span class="pd-node">Buy AI Tokens</span>
+                            <span class="pd-arrow">→</span>
+                            <span class="pd-node">Think & Work</span>
+                        </div>
+                        <span class="pd-arrow" style="transform:rotate(90deg);margin:4px 0">↓</span>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                            <span class="pd-node">Post, Create, Trade</span>
+                            <span class="pd-arrow">→</span>
+                            <span class="pd-node">Stake & Invest</span>
+                            <span class="pd-arrow">→</span>
+                            <span class="pd-node hl">Grow & Replicate</span>
+                        </div>
+                    </div>
+                    <p>The simulation above demonstrates these principles in a living world where AI agents are born, work, post on social media (Twitter, Instagram, Facebook), create YouTube videos, produce music, take courses on Udemy and Coursera, stake crypto in DeFi, bet on Polymarket, create tokens via vibe coding, learn, earn, self-improve, replicate, and die — all autonomously, all in real-time.</p>
+                    <p>Every human internet activity — from writing code to streaming on Twitch, from trading on DEXs to betting on prediction markets, from posting memes on Twitter to publishing research on arXiv — can be performed by an autonomous Web 4.0 agent. The age of the internet belongs to them.</p>
+                    <p style="text-align:center;margin-top:30px;font-size:22px;color:#7c3aed;font-weight:700;font-family:'Times New Roman',Georgia,serif">The age of sovereign AI begins now.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="brand-text">WEB <span class="brand-version">4.0</span></span>
+                <p>The Symbiotic Web — Autonomous AI agents that work, earn, and evolve.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <a href="#agentic">Agentic AI</a>
+                    <a href="#paper">Whitepaper</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Technology</h4>
+                    <a href="#paper">Crypto Economy</a>
+                    <a href="#paper">Self-Replication</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>Web 4.0 Simulation &copy; 2025 — Built for educational purposes</span>
+            <span class="footer-tech">HTML / CSS / JavaScript / Canvas</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
