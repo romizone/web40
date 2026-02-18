@@ -1145,10 +1145,10 @@ function renderWorld() {
         grd.addColorStop(1, 'transparent');
         ctx.fillStyle = grd;
         ctx.fillRect(lx-45, ly-45, 90, 90);
-        ctx.font = '28px serif';
+        ctx.font = 'bold 28px serif';
         ctx.textAlign = 'center';
         ctx.fillText(loc.emoji, lx, ly + 10);
-        ctx.font = '11px Inter, sans-serif';
+        ctx.font = 'bold 11px Inter, sans-serif';
         ctx.fillStyle = 'rgba(255,255,255,0.8)';
         ctx.fillText(loc.name, lx, ly + 30);
     });
@@ -1218,21 +1218,21 @@ function renderWorld() {
             ctx.stroke();
         }
 
-        ctx.font = a.alive ? '20px serif' : '16px serif';
+        ctx.font = a.alive ? 'bold 20px serif' : 'bold 16px serif';
         ctx.textAlign = 'center';
         ctx.fillText(a.alive ? a.emoji : '💀', ax, ay - 15);
 
-        ctx.font = '10px Inter, sans-serif';
+        ctx.font = 'bold 10px Inter, sans-serif';
         ctx.fillStyle = a.alive ? 'rgba(255,255,255,0.85)' : 'rgba(200,50,50,0.5)';
         ctx.fillText(a.name, ax, ay + 22);
         if (a.alive) {
-            ctx.font = '8px JetBrains Mono, monospace';
+            ctx.font = 'bold 8px JetBrains Mono, monospace';
             ctx.fillStyle = a.money < 20 ? 'rgba(255,80,80,0.9)' : 'rgba(255,255,200,0.75)';
             ctx.fillText(a.money.toFixed(0) + ' Crypto', ax, ay + 32);
         }
 
         if (a.bubbleTimer > 0) {
-            ctx.font = '16px serif';
+            ctx.font = 'bold 16px serif';
             ctx.globalAlpha = alpha * (a.bubbleTimer / 50);
             ctx.fillText(a.bubbleText, ax + 18, ay - 22);
         }
@@ -1242,7 +1242,7 @@ function renderWorld() {
 
     const alive = agents.filter(a => a.alive).length;
     const dead = agents.filter(a => !a.alive).length;
-    ctx.font = '11px Inter, sans-serif';
+    ctx.font = 'bold 11px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillStyle = 'rgba(255,255,255,0.7)';
     const timeIcon = hour >= 6 && hour < 18 ? '☀️' : '🌙';
@@ -1255,6 +1255,7 @@ function renderWorld() {
     ctx.fill();
     ctx.fillStyle = 'rgba(255,255,255,0.7)';
     ctx.textAlign = 'right';
+    ctx.font = 'bold 11px Inter, sans-serif';
     ctx.fillText('♥ heartbeat', w - 30, 18);
 }
 

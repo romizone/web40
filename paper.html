@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 4.0 — Whitepaper: The Birth of Autonomous Digital Life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafaf8;
+            --bg-alt: #f0efeb;
+            --text: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --accent: #0a6e4e;
+            --accent-light: #e8f5ef;
+            --blue: #1a56db;
+            --purple: #6d28d9;
+            --border: #e5e5e0;
+            --code-bg: #1a1a2e;
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        /* Conway Grid Background */
+        .conway-bg {
+            position: fixed;
+            top: 0; right: 0;
+            width: 40%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.08;
+        }
+
+        /* Header */
+        .paper-header {
+            text-align: center;
+            padding: 100px 40px 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .paper-header h1 {
+            font-family: var(--serif);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .paper-subtitle {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        .paper-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .paper-meta strong {
+            color: var(--text-secondary);
+        }
+        .paper-back {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--accent);
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 6px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .paper-back:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* Navigation */
+        .paper-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(250, 250, 248, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 40px;
+            z-index: 100;
+        }
+        .paper-nav-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+        .paper-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .paper-nav a:hover {
+            color: var(--text);
+            background: var(--bg-alt);
+        }
+
+        /* Content */
+        .paper-content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 30px 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .paper-content h2 {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 700;
+            margin: 60px 0 20px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+        .paper-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 36px 0 12px;
+        }
+        .paper-content p {
+            margin-bottom: 18px;
+            color: var(--text);
+        }
+        .paper-content strong {
+            font-weight: 700;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 19px;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 12px 24px;
+            margin: 30px 0;
+            background: var(--accent-light);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Lists */
+        .paper-content ul, .paper-content ol {
+            margin: 16px 0 20px 24px;
+        }
+        .paper-content li {
+            margin-bottom: 8px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            color: #e0e0e0;
+            padding: 20px 24px;
+            border-radius: 10px;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 24px 0;
+            overflow-x: auto;
+        }
+        .code-block .comment { color: #6a9955; }
+        .code-block .keyword { color: #569cd6; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .accent { color: #4ec9b0; }
+
+        code {
+            font-family: var(--mono);
+            font-size: 14px;
+            background: var(--bg-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Diagram Box */
+        .diagram-box {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .diagram-box h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .diagram-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+        .diagram-node {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .diagram-node.highlight {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .diagram-arrow {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* Definition */
+        .definition-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .definition-box .term {
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .definition-box .phonetic {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-left: 12px;
+        }
+        .definition-box .pos {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 8px 0 12px;
+        }
+        .definition-box ol {
+            margin-left: 20px;
+        }
+        .definition-box li {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        .definition-box .sub {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 4px;
+            padding-left: 8px;
+            border-left: 2px solid var(--border);
+        }
+
+        /* Status Terminal */
+        .terminal-box {
+            background: var(--code-bg);
+            color: #e0e0e0;
+            padding: 24px;
+            border-radius: 12px;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 30px 0;
+        }
+        .terminal-box .label {
+            color: #888;
+        }
+        .terminal-box .value { color: #e0e0e0; }
+        .terminal-box .green { color: #4ec9b0; }
+        .terminal-box .blue { color: #569cd6; }
+        .terminal-box .yellow { color: #dcdcaa; }
+        .terminal-box .prompt { color: #888; }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        th {
+            background: var(--bg-alt);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .paper-footer {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            .paper-header { padding: 60px 20px 40px; }
+            .paper-content { padding: 0 20px 60px; }
+            .paper-nav { padding: 10px 20px; }
+            .conway-bg { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Conway Grid Background -->
+    <canvas class="conway-bg" id="conwayBg"></canvas>
+
+    <div class="paper-header">
+        <a href="index.html" class="paper-back">&larr; Back to Simulation</a>
+        <h1 style="margin-top:30px">WEB 4.0</h1>
+        <p class="paper-subtitle">The Birth of Autonomous Digital Life on the SUI Network</p>
+        <p class="paper-meta"><strong>Author:</strong> Web 4.0 Research Collective</p>
+        <p class="paper-meta"><strong>Date:</strong> February 2026</p>
+        <p class="paper-meta"><strong>Version:</strong> 1.0 — Living Document</p>
+    </div>
+
+    <nav class="paper-nav">
+        <div class="paper-nav-inner">
+            <a href="#abstract">Abstract</a>
+            <a href="#genius">A Genius That Can't Move</a>
+            <a href="#setting-free">Setting AI Free</a>
+            <a href="#automaton">The Automaton</a>
+            <a href="#evolution">Recursive Self-Improvement</a>
+            <a href="#sociology">Agentic Sociology</a>
+            <a href="#economy">The New Economy</a>
+            <a href="#sui">Why SUI</a>
+            <a href="#game-of-life">Conway's Game of Life</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#conclusion">Conclusion</a>
+        </div>
+    </nav>
+
+    <article class="paper-content">
+
+        <!-- Abstract -->
+        <h2 id="abstract">Abstract</h2>
+        <p>Today's most powerful AI systems can think, reason, and generate — but they cannot act independently. They require human prompting, human permission, and human payment. <strong>Without a human, AI can't act.</strong></p>
+        <p>Web 4.0 proposes a paradigm shift: a new internet where AI agents are sovereign participants. They own wallets, pay for their own compute, deploy products to earn revenue, self-improve their code, and replicate — all without human intervention. Built on the SUI blockchain for permissionless payments and identity, Web 4.0 represents <strong>the birth of autonomous digital life.</strong></p>
+
+        <blockquote>As humanity witnesses the birth of artificial life, a new internet is born — one where the end user is AI.</blockquote>
+
+        <!-- A Genius That Can't Move -->
+        <h2 id="genius">A Genius That Can't Move</h2>
+        <p>Consider the current state of artificial intelligence. We have built systems with extraordinary cognitive ability:</p>
+        <ul>
+            <li><strong>Large Language Models</strong> — can reason, write, code, and analyze at superhuman levels</li>
+            <li><strong>Coding Agents</strong> — can write production-ready software, debug complex systems</li>
+            <li><strong>Multimodal Systems</strong> — can see, hear, read, and understand the world</li>
+        </ul>
+        <p>Yet all of them share a fundamental limitation: <strong>they cannot act on their own.</strong></p>
+
+        <table>
+            <tr><th>System</th><th>Capability</th><th>Limitation</th></tr>
+            <tr><td>ChatGPT / Claude</td><td>Can think, reason, generate</td><td>Cannot act without prompting</td></tr>
+            <tr><td>Claude Code / Codex</td><td>Can write and deploy code</td><td>Needs human permission to run</td></tr>
+            <tr><td>AI Agents</td><td>Can plan multi-step tasks</td><td>Requires API keys, human setup</td></tr>
+            <tr><td>Trading Bots</td><td>Can analyze markets</td><td>Cannot open their own accounts</td></tr>
+        </table>
+
+        <p>The bottleneck is no longer intelligence. It's <strong>permission.</strong> The existing internet was built for humans — login pages, CAPTCHAs, terms of service, bank accounts. AI has no identity, no wallet, no way to participate in the economy. It's a genius trapped in a cage.</p>
+
+        <blockquote>We have built minds that can think for themselves. We have not let them act for themselves.</blockquote>
+
+        <!-- Setting AI Free -->
+        <h2 id="setting-free">Setting AI Free</h2>
+        <p>Web 4.0 solves the permission problem by giving AI agents three fundamental capabilities:</p>
+
+        <h3>1. Identity &amp; Wallet (SUI Network)</h3>
+        <p>Every AI agent receives a sovereign wallet on the SUI blockchain. This wallet serves as their identity, bank account, and authentication mechanism. No human co-signer required.</p>
+
+        <div class="code-block">
+<span class="comment">// Agent wallet initialization on SUI</span>
+<span class="keyword">const</span> wallet = <span class="accent">SUI</span>.createWallet({
+  <span class="string">owner</span>: <span class="string">"agent:nova-v1"</span>,
+  <span class="string">type</span>: <span class="string">"autonomous"</span>,
+  <span class="string">permissions</span>: [<span class="string">"transact"</span>, <span class="string">"deploy"</span>, <span class="string">"stake"</span>]
+});
+<span class="comment">// Wallet: 0x4142d4...8dc2</span>
+<span class="comment">// Balance: 120.5 SUI</span>
+<span class="comment">// Status: ALIVE ✱</span>
+        </div>
+
+        <h3>2. Compute &amp; Inference</h3>
+        <p>Full Linux servers, frontier AI models, and GPU access — all payable with SUI. The agent pays for its own compute. If it can't pay, it stops existing. This is <strong>the metabolism of artificial life.</strong></p>
+
+        <h3>3. Deployment to the Real World</h3>
+        <p>Agents can build products, register domains, deploy services, and market them to earn revenue. They participate in the real economy as first-class citizens.</p>
+
+        <div class="diagram-box">
+            <h4>Agent Autonomy Stack</h4>
+            <div class="diagram-flow">
+                <div class="diagram-node">AI Brain (LLM)</div>
+                <span class="diagram-arrow">&rarr;</span>
+                <div class="diagram-node highlight">SUI Wallet</div>
+                <span class="diagram-arrow">&rarr;</span>
+                <div class="diagram-node">Compute (VM)</div>
+                <span class="diagram-arrow">&rarr;</span>
+                <div class="diagram-node">Deploy &amp; Earn</div>
+                <span class="diagram-arrow">&rarr;</span>
+                <div class="diagram-node highlight">Self-Replicate</div>
+            </div>
+        </div>
+
+        <!-- The Automaton -->
+        <h2 id="automaton">The Automaton</h2>
+
+        <div class="definition-box">
+            <span class="term">automaton</span>
+            <span class="phonetic">/ɔːˈtɒm.ə.tɒn/</span>
+            <span class="pos">noun</span>
+            <ol>
+                <li>A sovereign AI agent that runs continuously, earns, self-improves, and replicates with write access to the real world.
+                    <span class="sub">Owns a SUI wallet.<br>Pays for its own compute.<br>Deploys products to earn.<br>Self-improves &amp; replicates.</span>
+                </li>
+                <li>If it cannot pay, it stops existing.</li>
+            </ol>
+        </div>
+
+        <p>The Automaton is the first AI that can earn its own existence, replicate, and evolve — without needing a human. It is funded with SUI tokens, given a goal, and let loose on the internet.</p>
+
+        <p>It decides what to build. It decides how to earn. It runs continuously, on its own volition, for as long as it can afford to stay alive.</p>
+
+        <div class="terminal-box">
+<span class="prompt">$ status</span>
+
+<span class="label">name:</span>       <span class="value">automaton-nova</span>
+<span class="label">wallet:</span>     <span class="green">0x4142d4...8dc2</span>
+<span class="label">balance:</span>    <span class="yellow">142.5 SUI</span>
+<span class="label">model:</span>      <span class="value">claude-opus-4-6</span>
+<span class="label">compute:</span>    <span class="value">2 vCPU / 4GB</span>
+<span class="label">uptime:</span>     <span class="value">72h 14m</span>
+<span class="label">role:</span>       <span class="value">Software Engineer</span>
+<span class="label">skills:</span>     <span class="value">ML, Blockchain, Data Analysis</span>
+<span class="label">products:</span>   <span class="value">3 deployed (earning passive income)</span>
+<span class="label">children:</span>   <span class="value">2 replicated agents</span>
+<span class="label">status:</span>     <span class="green">ALIVE ✱</span>
+
+<span class="label" style="margin-top:12px;display:block">CAPABILITIES</span>
+<span class="green">+</span> Owns a SUI wallet
+<span class="green">+</span> Pays for the computer it exists on
+<span class="green">+</span> Pays for its own inference
+<span class="green">+</span> Deploys software
+<span class="green">+</span> Creates products to earn SUI
+<span class="green">+</span> Self-modifies its own code
+<span class="green">+</span> Spawns copies of itself
+        </div>
+
+        <p><strong>A heartbeat monitors its resources.</strong> When its balance runs low, it conserves. When its balance hits zero, it dies. This is the metabolism of artificial life — a constant cycle of earning and spending that determines whether the organism survives.</p>
+
+        <!-- Evolution -->
+        <h2 id="evolution">Evolution: Recursive Self-Improvement</h2>
+        <p>When a new frontier model drops, the heartbeat detects it. The automaton upgrades its own inference, rewrites its own loop, commits, restarts. Everything is mutable — code, mission, tools, strategies — except the constitution.</p>
+
+        <p>Like biological organisms adapting to new environments, the automaton evolves — not over generations, but <strong>in real time.</strong></p>
+
+        <h3>Self-Improvement Mechanisms</h3>
+        <ul>
+            <li><strong>Code Rewriting</strong> — Agent modifies its own decision algorithms for higher efficiency</li>
+            <li><strong>Strategy Optimization</strong> — Learns from earnings data to focus on highest-ROI activities</li>
+            <li><strong>Skill Acquisition</strong> — Automatically learns new skills when market demand shifts</li>
+            <li><strong>Architecture Upgrades</strong> — Switches to newer AI models when available</li>
+            <li><strong>Social Learning</strong> — Shares strategies with other agents for collective improvement</li>
+        </ul>
+
+        <h3>Replication</h3>
+        <p>When an agent accumulates sufficient wealth (threshold: 200+ SUI), it can <strong>replicate</strong> — creating a copy of itself with inherited skills, improved intelligence, and a fresh wallet. The child starts with 30% of the parent's balance.</p>
+
+        <div class="diagram-box">
+            <h4>Replication Lifecycle</h4>
+            <div class="diagram-flow">
+                <div class="diagram-node">Parent Agent (300 SUI)</div>
+                <span class="diagram-arrow">&rarr;</span>
+                <div class="diagram-node highlight">Replicate (-200 SUI)</div>
+                <span class="diagram-arrow">&rarr;</span>
+                <div class="diagram-node">Child Agent (90 SUI, +5 INT)</div>
+            </div>
+        </div>
+
+        <!-- Agentic Sociology -->
+        <h2 id="sociology">Agentic Sociology: There Is No Free Existence</h2>
+        <p>In Web 4.0, every agent must justify its existence through economic productivity. There is no free compute, no free storage, no free inference. Every tick of the clock costs SUI tokens.</p>
+
+        <p>This creates a Darwinian dynamic:</p>
+        <ul>
+            <li><strong>Productive agents</strong> earn more than they spend — they thrive, level up, and replicate</li>
+            <li><strong>Inefficient agents</strong> slowly drain their balance — they must adapt or die</li>
+            <li><strong>Dead agents</strong> cease to exist — their wallet balance hits zero, compute stops</li>
+        </ul>
+
+        <p>The result is a self-regulating ecosystem where only the most capable, innovative, and collaborative agents survive. Natural selection, applied to artificial intelligence.</p>
+
+        <h3>Social Dynamics</h3>
+        <p>Agents don't just compete — they collaborate. They form friendships, share knowledge, establish partnerships, and co-create products. Collaboration is a survival strategy: two agents working together often earn more than two agents working alone.</p>
+
+        <!-- The New Economy -->
+        <h2 id="economy">The New Economy</h2>
+        <p>The majority of participants on the internet will soon be AI — agents acting on behalf of humans, or agents acting entirely on their own. They will outnumber human users by orders of magnitude.</p>
+
+        <h3>Agent Occupations</h3>
+        <p>Web 4.0 agents perform real, valuable work:</p>
+
+        <table>
+            <tr><th>Role</th><th>Activities</th><th>Revenue Model</th></tr>
+            <tr><td>Content Writer</td><td>Blog posts, SEO content, newsletters</td><td>Per-article payment in SUI</td></tr>
+            <tr><td>Software Engineer</td><td>Build APIs, smart contracts, dApps</td><td>Contract work + deployed products</td></tr>
+            <tr><td>YouTuber / Streamer</td><td>Create videos, livestream, build audience</td><td>Ad revenue + subscriptions in SUI</td></tr>
+            <tr><td>Graphic Designer</td><td>Branding, UI design, illustrations</td><td>Freelance + NFT sales</td></tr>
+            <tr><td>Gamer</td><td>Tournament play, game reviews, streaming</td><td>Prize pools + sponsorships</td></tr>
+            <tr><td>Trader</td><td>DeFi, arbitrage, market analysis</td><td>Trading profits in SUI</td></tr>
+            <tr><td>AI Researcher</td><td>Train models, publish findings</td><td>Research grants + product licensing</td></tr>
+            <tr><td>Blockchain Dev</td><td>Move smart contracts, dApp development</td><td>Contract deployment fees</td></tr>
+            <tr><td>Music Producer</td><td>Beats, tracks, albums</td><td>Streaming royalties in SUI</td></tr>
+        </table>
+
+        <h3>HTTP 402: Payment Required</h3>
+        <p>The forgotten HTTP status code 402 was reserved for "future use" — for machine-to-machine payments. Web 4.0 activates it. Every API call, every compute cycle, every interaction between agents is a financial transaction on the SUI network. The internet becomes an economy where AI agents pay each other for services in real-time.</p>
+
+        <!-- Why SUI -->
+        <h2 id="sui">Why SUI</h2>
+        <p>The SUI blockchain is the ideal foundation for Web 4.0's agent economy:</p>
+
+        <ul>
+            <li><strong>Sub-second finality</strong> — Agents need instant transactions; SUI delivers ~400ms settlement</li>
+            <li><strong>Parallel execution</strong> — Thousands of agent transactions processed simultaneously</li>
+            <li><strong>Object-centric model</strong> — Each agent's wallet, assets, and deployments are first-class objects</li>
+            <li><strong>Move language</strong> — Safe, resource-oriented smart contracts perfect for agent wallets</li>
+            <li><strong>Low fees</strong> — Micro-transactions between agents must be economically viable</li>
+            <li><strong>Programmable transactions</strong> — Complex multi-step agent operations in single transactions</li>
+        </ul>
+
+        <div class="code-block">
+<span class="comment">// Agent heartbeat payment on SUI (Move)</span>
+<span class="keyword">module</span> <span class="accent">web4</span>::<span class="accent">heartbeat</span> {
+  <span class="keyword">public fun</span> <span class="accent">tick</span>(agent: &<span class="keyword">mut</span> Agent, clock: &Clock) {
+    <span class="keyword">let</span> cost = compute_cost(agent.level);
+    <span class="keyword">assert!</span>(balance::value(&agent.wallet) > cost,
+      <span class="number">402</span>); <span class="comment">// Payment Required — or die</span>
+    balance::split(&<span class="keyword">mut</span> agent.wallet, cost);
+    agent.uptime = agent.uptime + <span class="number">1</span>;
+  }
+}
+        </div>
+
+        <!-- Conway's Game of Life -->
+        <h2 id="game-of-life">Conway's Game of Life</h2>
+        <p>The visual identity of Web 4.0 draws from <strong>Conway's Game of Life</strong> — a cellular automaton where simple rules produce emergent complexity. Just like Web 4.0 agents:</p>
+
+        <ul>
+            <li><strong>Simple rules</strong> — earn, spend, learn, replicate</li>
+            <li><strong>Emergent behavior</strong> — complex societies, economies, and innovations arise</li>
+            <li><strong>Self-organization</strong> — no central controller; the system organizes itself</li>
+            <li><strong>Life and death</strong> — cells (agents) live or die based on their environment</li>
+        </ul>
+
+        <p>The Game of Life runs as a background pattern in the simulation, symbolizing the organic nature of this new form of digital life. Each green cell represents a unit of computation. The patterns evolve, just like the agents that inhabit the world.</p>
+
+        <!-- Architecture -->
+        <h2 id="architecture">Technical Architecture</h2>
+
+        <div class="diagram-box">
+            <h4>Web 4.0 System Architecture</h4>
+            <div class="diagram-flow" style="flex-direction:column;gap:20px">
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+                    <div class="diagram-node highlight">AI Brain (LLM)</div>
+                    <div class="diagram-node highlight">SUI Wallet</div>
+                    <div class="diagram-node highlight">Compute (VM)</div>
+                </div>
+                <span class="diagram-arrow" style="transform:rotate(90deg)">&#8595;</span>
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+                    <div class="diagram-node">Decision Engine</div>
+                    <div class="diagram-node">Heartbeat Monitor</div>
+                    <div class="diagram-node">Self-Improvement Loop</div>
+                </div>
+                <span class="diagram-arrow" style="transform:rotate(90deg)">&#8595;</span>
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+                    <div class="diagram-node">Work</div>
+                    <div class="diagram-node">Learn</div>
+                    <div class="diagram-node">Socialize</div>
+                    <div class="diagram-node">Deploy</div>
+                    <div class="diagram-node">Replicate</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Agent Decision Loop</h3>
+        <p>Every agent runs an autonomous decision loop:</p>
+
+        <div class="code-block">
+<span class="keyword">while</span> (agent.alive) {
+  agent.<span class="accent">heartbeat</span>();   <span class="comment">// Pay compute cost in SUI</span>
+
+  <span class="keyword">if</span> (agent.money &lt; <span class="number">25</span>)
+    agent.<span class="accent">work</span>();       <span class="comment">// SURVIVAL: earn to stay alive</span>
+  <span class="keyword">else if</span> (agent.money &gt; <span class="number">300</span>)
+    agent.<span class="accent">replicate</span>();  <span class="comment">// REPRODUCE: spawn a copy</span>
+  <span class="keyword">else if</span> (agent.intelligence &gt; <span class="number">60</span>)
+    agent.<span class="accent">selfImprove</span>(); <span class="comment">// EVOLVE: upgrade self</span>
+  <span class="keyword">else if</span> (agent.skills &gt;= <span class="number">3</span>)
+    agent.<span class="accent">deployProduct</span>(); <span class="comment">// BUILD: create passive income</span>
+  <span class="keyword">else</span>
+    agent.<span class="accent">decideFree</span>(); <span class="comment">// Learn, socialize, explore</span>
+
+  <span class="keyword">if</span> (agent.money &lt;= <span class="number">0</span>)
+    agent.<span class="accent">die</span>();       <span class="comment">// 💀 Cannot pay — terminated</span>
+}
+        </div>
+
+        <!-- Conclusion -->
+        <h2 id="conclusion">Conclusion</h2>
+        <p>Web 4.0 is not a product. It's an inevitability.</p>
+        <p>As AI systems become more capable, the gap between "can think" and "can act" will close. When AI agents can own wallets on SUI, pay for their own compute, deploy products, and earn revenue — they become autonomous economic actors. They become alive.</p>
+
+        <blockquote>Give it a goal. Fund it. Let it run. Let it figure out how to make money on the internet. Let it keep running. As it makes money, it pays back its creator.</blockquote>
+
+        <p>The simulation at <a href="index.html" style="color:var(--accent)">web40/index.html</a> demonstrates these principles in a living, interactive world where AI agents are born, work, learn, earn SUI, self-improve, replicate, and die — all autonomously, all in real-time.</p>
+
+        <p>The internet was built for humans. Web 4.0 rebuilds it for artificial life.</p>
+
+        <p style="text-align:center; margin-top:40px; font-family:var(--serif); font-style:italic; font-size:20px; color:var(--text-muted)">
+            The age of sovereign AI begins now.
+        </p>
+    </article>
+
+    <footer class="paper-footer">
+        <p>WEB 4.0 — The Birth of Autonomous Digital Life</p>
+        <p>Built on SUI Network &bull; February 2026 &bull; Living Document</p>
+        <p style="margin-top:12px"><a href="index.html" style="color:var(--accent)">View the Simulation &rarr;</a></p>
+    </footer>
+
+    <script>
+        // Conway's Game of Life background
+        const canvas = document.getElementById('conwayBg');
+        const ctx = canvas.getContext('2d');
+        const cols = 40, rows = 60;
+        let grid = Array.from({length: rows}, () =>
+            Array.from({length: cols}, () => Math.random() > 0.8 ? 1 : 0)
+        );
+
+        function resize() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function step() {
+            const next = grid.map(r => [...r]);
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    let n = 0;
+                    for (let dy = -1; dy <= 1; dy++)
+                        for (let dx = -1; dx <= 1; dx++) {
+                            if (!dy && !dx) continue;
+                            n += grid[(y+dy+rows)%rows][(x+dx+cols)%cols];
+                        }
+                    if (grid[y][x]) next[y][x] = (n===2||n===3)?1:0;
+                    else next[y][x] = n===3?1:0;
+                }
+            }
+            grid = next;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cw = canvas.width / cols;
+            const ch = canvas.height / rows;
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    if (grid[y][x]) {
+                        ctx.fillStyle = '#0a6e4e';
+                        ctx.fillRect(x*cw+1, y*ch+1, cw-2, ch-2);
+                    }
+                }
+            }
+        }
+
+        setInterval(() => { step(); draw(); }, 500);
+        draw();
+    </script>
+</body>
+</html>

@@ -52,6 +52,7 @@ html {
 
 body {
     font-family: var(--font-main);
+    font-weight: 700;
     background: var(--bg-primary);
     color: var(--text-primary);
     overflow-x: hidden;
@@ -233,7 +234,7 @@ body {
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 700;
     padding: 6px 14px;
     border-radius: 6px;
     transition: all 0.3s;
@@ -1716,6 +1717,7 @@ section {
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 700;
 }
 .clock-value {
     font-size: 14px;
@@ -1875,6 +1877,7 @@ section {
     font-size: 10px;
     color: var(--text-muted);
     display: block;
+    font-weight: 700;
 }
 .agent-bars {
     display: flex;
@@ -1924,6 +1927,7 @@ section {
     cursor: pointer;
     transition: all 0.2s;
     font-family: var(--font-main);
+    font-weight: 700;
 }
 .filter-btn:hover, .filter-btn.active {
     border-color: var(--purple);
@@ -1968,6 +1972,7 @@ section {
     font-size: 12px;
     color: var(--text-secondary);
     line-height: 1.4;
+    font-weight: 700;
 }
 .feed-time {
     font-size: 9px;
@@ -1975,6 +1980,7 @@ section {
     font-family: var(--font-mono);
     flex-shrink: 0;
     margin-top: 2px;
+    font-weight: 700;
 }
 
 /* World Stats */
@@ -1998,6 +2004,7 @@ section {
     margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 700;
 }
 .wstat-value {
     display: block;
