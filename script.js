@@ -432,11 +432,11 @@ class Agent {
         if (this.intelligence < 80 && Math.random() > 0.4) { this.goLearn(); return; }
 
         const roll = Math.random();
-        if (roll < 0.25) this.goWork();
-        else if (roll < 0.38) this.goLearn();
-        else if (roll < 0.48) this.goSocialize();
-        else if (roll < 0.56) this.goSocialMedia();
-        else if (roll < 0.64) this.goCreateContent();
+        if (roll < 0.18) this.goWork();
+        else if (roll < 0.28) this.goLearn();
+        else if (roll < 0.36) this.goSocialize();
+        else if (roll < 0.48) this.goSocialMedia();
+        else if (roll < 0.60) this.goCreateContent();
         else if (roll < 0.72) this.goDeFi();
         else if (roll < 0.80) this.goOnlineCourse();
         else if (roll < 0.88) this.goBet();
@@ -1099,29 +1099,46 @@ function renderWorld() {
 
     const hour = (worldTime % 1440) / 60;
     const daylight = Math.max(0, Math.sin((hour - 6) / 12 * Math.PI));
-    const bgR = Math.floor(140 + daylight * 20);
-    const bgG = Math.floor(190 + daylight * 15);
-    const bgB = Math.floor(120 + daylight * 15);
+    const bgR = Math.floor(8 + daylight * 4);
+    const bgG = Math.floor(8 + daylight * 6);
+    const bgB = Math.floor(18 + daylight * 8);
     ctx.fillStyle = `rgb(${bgR},${bgG},${bgB})`;
     ctx.fillRect(0, 0, w, h);
 
+    // Game of Life cells
     const cellW = w / GOL_COLS;
     const cellH = h / GOL_ROWS;
     for (let y = 0; y < GOL_ROWS; y++) {
         for (let x = 0; x < GOL_COLS; x++) {
             if (golGrid[y][x]) {
-                ctx.fillStyle = `rgba(255, 255, 255, ${0.06 + daylight * 0.03})`;
+                ctx.fillStyle = `rgba(0, 240, 255, ${0.04 + daylight * 0.03})`;
                 ctx.fillRect(x * cellW + 1, y * cellH + 1, cellW - 2, cellH - 2);
             }
         }
     }
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    // ===== VISIBLE GRID =====
+    // Small grid lines every 40px
+    ctx.strokeStyle = 'rgba(0, 240, 255, 0.06)';
     ctx.lineWidth = 0.5;
     for (let i = 0; i < w; i += 40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
     for (let i = 0; i < h; i += 40) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+    // Medium grid lines every 80px
+    ctx.strokeStyle = 'rgba(0, 240, 255, 0.10)';
+    ctx.lineWidth = 0.8;
+    for (let i = 0; i < w; i += 80) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+    for (let i = 0; i < h; i += 80) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+    // Major grid lines every 200px
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.18)';
+    ctx.lineWidth = 1.5;
+    for (let i = 0; i < w; i += 200) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+    for (let i = 0; i < h; i += 200) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+    // Border outline
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, w - 2, h - 2);
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.1)';
     ctx.lineWidth = 1;
     for (let i = 0; i < LOCATIONS.length; i++) {
         for (let j = i+1; j < LOCATIONS.length; j++) {
@@ -1141,7 +1158,7 @@ function renderWorld() {
     LOCATIONS.forEach(loc => {
         const lx = loc.x * w, ly = loc.y * h;
         const grd = ctx.createRadialGradient(lx, ly, 0, lx, ly, 35);
-        grd.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
+        grd.addColorStop(0, 'rgba(168, 85, 247, 0.12)');
         grd.addColorStop(1, 'transparent');
         ctx.fillStyle = grd;
         ctx.fillRect(lx-45, ly-45, 90, 90);
@@ -1314,6 +1331,15 @@ function startAgenticWorld() {
     document.getElementById('btnPauseWorld').style.display = 'inline-flex';
 
     for (let i = 0; i < 6; i++) spawnAgent();
+
+    // Force diverse initial activities so feeds aren't empty
+    const initialActivities = ['goSocialMedia', 'goDeFi', 'goCreateContent', 'goWork', 'goLearn', 'goSocialMedia'];
+    agents.forEach((a, i) => {
+        if (a.alive && initialActivities[i]) {
+            a[initialActivities[i]]();
+        }
+    });
+
     worldLoop();
 }
 
