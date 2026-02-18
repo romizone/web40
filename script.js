@@ -1141,16 +1141,16 @@ function renderWorld() {
     LOCATIONS.forEach(loc => {
         const lx = loc.x * w, ly = loc.y * h;
         const grd = ctx.createRadialGradient(lx, ly, 0, lx, ly, 35);
-        grd.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+        grd.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
         grd.addColorStop(1, 'transparent');
         ctx.fillStyle = grd;
-        ctx.fillRect(lx-35, ly-35, 70, 70);
-        ctx.font = '18px serif';
+        ctx.fillRect(lx-45, ly-45, 90, 90);
+        ctx.font = '28px serif';
         ctx.textAlign = 'center';
-        ctx.fillText(loc.emoji, lx, ly + 6);
-        ctx.font = '9px Inter, sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
-        ctx.fillText(loc.name, lx, ly + 22);
+        ctx.fillText(loc.emoji, lx, ly + 10);
+        ctx.font = '11px Inter, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.fillText(loc.name, lx, ly + 30);
     });
 
     agents.forEach(a => {
@@ -1191,50 +1191,50 @@ function renderWorld() {
                 studying: `rgba(0, 240, 255, ${0.12 + heartPulse * 0.1})`,
                 betting: `rgba(255, 215, 0, ${0.12 + heartPulse * 0.1})`
             };
-            const glow = ctx.createRadialGradient(ax, ay, 0, ax, ay, 14 + heartPulse * 4);
+            const glow = ctx.createRadialGradient(ax, ay, 0, ax, ay, 22 + heartPulse * 6);
             glow.addColorStop(0, glowColors[a.state] || 'rgba(168, 85, 247, 0.1)');
             glow.addColorStop(1, 'transparent');
             ctx.fillStyle = glow;
             ctx.beginPath();
-            ctx.arc(ax, ay, 18, 0, Math.PI * 2);
+            ctx.arc(ax, ay, 28, 0, Math.PI * 2);
             ctx.fill();
 
             if (a.money < 20) {
                 ctx.beginPath();
-                ctx.arc(ax, ay, 12, 0, Math.PI * 2);
+                ctx.arc(ax, ay, 18, 0, Math.PI * 2);
                 ctx.strokeStyle = `rgba(239, 68, 68, ${0.3 + heartPulse * 0.4})`;
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 2;
                 ctx.stroke();
             }
         }
 
         ctx.beginPath();
-        ctx.arc(ax, ay, a.alive ? 6 : 4, 0, Math.PI * 2);
+        ctx.arc(ax, ay, a.alive ? 10 : 6, 0, Math.PI * 2);
         ctx.fillStyle = a.alive ? a.color : '#888';
         ctx.fill();
         if (a.alive) {
-            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1.5;
             ctx.stroke();
         }
 
-        ctx.font = a.alive ? '11px serif' : '10px serif';
+        ctx.font = a.alive ? '20px serif' : '16px serif';
         ctx.textAlign = 'center';
-        ctx.fillText(a.alive ? a.emoji : '💀', ax, ay - 11);
+        ctx.fillText(a.alive ? a.emoji : '💀', ax, ay - 15);
 
-        ctx.font = '8px Inter, sans-serif';
-        ctx.fillStyle = a.alive ? 'rgba(255,255,255,0.8)' : 'rgba(200,50,50,0.5)';
-        ctx.fillText(a.name, ax, ay + 16);
+        ctx.font = '10px Inter, sans-serif';
+        ctx.fillStyle = a.alive ? 'rgba(255,255,255,0.85)' : 'rgba(200,50,50,0.5)';
+        ctx.fillText(a.name, ax, ay + 22);
         if (a.alive) {
-            ctx.font = '7px JetBrains Mono, monospace';
-            ctx.fillStyle = a.money < 20 ? 'rgba(255,80,80,0.9)' : 'rgba(255,255,200,0.7)';
-            ctx.fillText(a.money.toFixed(0) + ' Crypto', ax, ay + 24);
+            ctx.font = '8px JetBrains Mono, monospace';
+            ctx.fillStyle = a.money < 20 ? 'rgba(255,80,80,0.9)' : 'rgba(255,255,200,0.75)';
+            ctx.fillText(a.money.toFixed(0) + ' Crypto', ax, ay + 32);
         }
 
         if (a.bubbleTimer > 0) {
-            ctx.font = '13px serif';
+            ctx.font = '16px serif';
             ctx.globalAlpha = alpha * (a.bubbleTimer / 50);
-            ctx.fillText(a.bubbleText, ax + 14, ay - 16);
+            ctx.fillText(a.bubbleText, ax + 18, ay - 22);
         }
 
         ctx.globalAlpha = 1;
