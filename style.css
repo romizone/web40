@@ -1716,6 +1716,78 @@ section {
 /* ========================================
    AGENTIC AI LIVING WORLD
    ======================================== */
+
+/* World Hero Header */
+.world-hero-header {
+    max-width: 700px;
+}
+.world-hero-header .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 4px;
+    animation: badgePulse 3s ease-in-out infinite;
+}
+.tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+    animation: pulse-dot 2s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(6, 214, 160, 0.5);
+}
+.world-main-title {
+    font-size: clamp(36px, 5vw, 56px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -1px;
+}
+.title-glow-text {
+    color: var(--text-primary);
+    text-shadow: 0 0 30px rgba(0, 240, 255, 0.3), 0 0 60px rgba(168, 85, 247, 0.15);
+    font-weight: 900;
+}
+.world-hero-header .section-desc {
+    font-size: 15px;
+    max-width: 540px;
+    margin: 0 auto 24px;
+}
+.world-hero-header .section-desc strong {
+    color: var(--cyan);
+    font-weight: 700;
+}
+.world-hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.wh-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    transition: all 0.3s;
+}
+.wh-stat:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+    background: rgba(168, 85, 247, 0.08);
+    transform: translateY(-2px);
+}
+.wh-stat-icon {
+    font-size: 16px;
+}
+.wh-stat-text {
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+}
 .world-controls {
     display: flex;
     align-items: center;
